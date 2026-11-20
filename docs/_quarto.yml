@@ -15,7 +15,7 @@ book:
     style: docked
     collapse-level: 1
   page-footer:
-    left: "Maintained by the [MISP Project](https://www.misp-project.org/)"
+    left: "© 2017 The MITRE Corporation · © 2026 [MISP Project](https://www.misp-project.org/)"
     right: "Built with [Quarto](https://quarto.org)"
   chapters:
     - index.qmd
