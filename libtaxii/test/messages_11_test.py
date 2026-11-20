@@ -1244,12 +1244,7 @@ class TestXmlAttacks(unittest.TestCase):
                         <foo>&xxe;</foo>
                       """
 
-        # If an XML Syntax Error is received, an attack would have succeeded
-
-        try:
-            e = parse(xee_remote)
-        except etree.XMLSyntaxError:
-            raise ValueError("An XML Syntax Error was raised, meaning a real attack would have succeeded!")
+        self.assert_external_entity_unexpanded(xee_remote)
 
     def test_xee_local(self):
         """
@@ -1263,12 +1258,16 @@ class TestXmlAttacks(unittest.TestCase):
                           <!ENTITY xxe SYSTEM "file:///etc/passwd" >]>
                         <foo>&xxe;</foo>
                       """
-        # If an XML Syntax Error is received, an attack would have succeeded
+        self.assert_external_entity_unexpanded(xee_local)
 
+    def assert_external_entity_unexpanded(self, xml):
+        # libxml2 can reject the entity or return an element with it unresolved.
         try:
-            e = parse(xee_local)
-        except etree.XMLSyntaxError:
-            raise ValueError("An XML Syntax Error was raised, meaning a real attack would have succeeded!")
+            element = parse(xml)
+        except etree.XMLSyntaxError as error:
+            self.assertEqual(error.code, etree.ErrorTypes.ERR_UNDECLARED_ENTITY)
+        else:
+            self.assertEqual(element.text, None)
 
     def test_ssrf(self):
         """

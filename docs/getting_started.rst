@@ -148,4 +148,4 @@ Example usage of clients:
 
     http_resp = client.call_taxii_service2('example.com', '/pollservice/', VID_TAXII_XML_11, discovery_xml)
     taxii_message = t.get_message_from_http_response(http_resp, discovery_request.message_id)
-    print taxii_message.to_xml()
+    print(taxii_message.to_xml())

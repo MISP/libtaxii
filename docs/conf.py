@@ -20,7 +20,7 @@ extensions = [
 ]
 
 intersphinx_mapping = {
-    'python': ('https://docs.python.org/', None),
+    'python': ('https://docs.python.org/3/', None),
 }
 
 templates_path = ['_templates']
@@ -37,9 +37,7 @@ exclude_patterns = [
 
 on_rtd = os.environ.get('READTHEDOCS', None) == 'True'
 if not on_rtd:
-    import sphinx_rtd_theme
     html_theme = 'sphinx_rtd_theme'
-    html_theme_path = [sphinx_rtd_theme.get_html_theme_path()]
 else:
     html_theme = 'default'
 
