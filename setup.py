@@ -50,11 +50,12 @@ if (py_maj, py_minor) < (2, 7):
     install_requires.append('argparse')
 
 setup(
-    name='libtaxii',
+    name='misp-libtaxii',
     description='TAXII 1.X Library.',
     author='The MITRE Corporation',
     author_email='taxii@mitre.org',
-    url='https://taxiiproject.github.io/',
+    maintainer='MISP Project',
+    url='https://github.com/MISP/libtaxii',
     version=get_version(),
     packages=find_packages(),
     license='BSD',

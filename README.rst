@@ -7,14 +7,14 @@ A Python library for handling `Trusted Automated eXchange of Indicator Informati
 :Upstream: https://github.com/TAXIIProject/libtaxii/
 :Documentation: https://misp.github.io/libtaxii/
 :Information: https://taxiiproject.github.io/
-:Download: https://pypi.python.org/pypi/libtaxii/
+:Download: https://pypi.org/project/misp-libtaxii/
 
 |version badge| |downloads badge|
 
-.. |version badge| image:: https://img.shields.io/pypi/v/libtaxii.svg?maxAge=3600
-   :target: https://pypi.python.org/pypi/libtaxii/
-.. |downloads badge| image:: https://img.shields.io/pypi/dm/libtaxii.svg?maxAge=3600
-   :target: https://pypi.python.org/pypi/libtaxii/
+.. |version badge| image:: https://img.shields.io/pypi/v/misp-libtaxii.svg?maxAge=3600
+   :target: https://pypi.org/project/misp-libtaxii/
+.. |downloads badge| image:: https://img.shields.io/pypi/dm/misp-libtaxii.svg?maxAge=3600
+   :target: https://pypi.org/project/misp-libtaxii/
 
 Overview
 --------
@@ -45,7 +45,8 @@ virtual environment and install this checkout from the repository root.
 
 On Windows PowerShell, activate the environment with
 ``.venv\Scripts\Activate.ps1``. For a published release, use
-``uv pip install libtaxii`` or ``python -m pip install libtaxii``.
+``uv pip install misp-libtaxii`` or ``python -m pip install misp-libtaxii``.
+Python code continues to use ``import libtaxii``.
 
 To install the development tools and run the tests from the checkout:
 
@@ -56,6 +57,17 @@ To install the development tools and run the tests from the checkout:
 
 See the `installation guide
 <https://misp.github.io/libtaxii/installation.html>`_ for more examples.
+
+Publishing to PyPI
+------------------
+
+Before the first release, register a GitHub pending publisher for
+``misp-libtaxii`` with owner ``MISP``, repository ``libtaxii``, workflow
+``publish.yml`` and environment ``pypi`` in the
+`PyPI publishing settings <https://pypi.org/manage/account/publishing/>`_.
+Publish a GitHub Release whose tag matches the version in
+``libtaxii/version.py``. The workflow builds and uploads the wheel and source
+distribution using Trusted Publishing.
 
 
 Getting Started
