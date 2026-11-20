@@ -112,7 +112,7 @@ setup(
     ],
     project_urls={
         'Documentation': 'https://misp.github.io/libtaxii/',
-        'Source Code': 'https://github.com/TAXIIProject/libtaxii/',
-        'Bug Tracker': 'https://github.com/TAXIIProject/libtaxii/issues/',
+        'Source Code': 'https://github.com/MISP/libtaxii/',
+        'Bug Tracker': 'https://github.com/MISP/libtaxii/issues/',
     },
 )

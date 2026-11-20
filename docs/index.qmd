@@ -3,6 +3,10 @@
 libtaxii is a Python library for the Trusted Automated eXchange of Indicator
 Information (TAXII) 1.x specifications.
 
+The MISP Project maintains this fork of libtaxii. The MITRE Corporation
+developed the original library. See the [MISP fork](https://github.com/MISP/libtaxii)
+and the [upstream repository](https://github.com/TAXIIProject/libtaxii).
+
 Use it to create TAXII 1.0 and 1.1 messages, serialize them to XML or Python
 dictionaries, and send them over HTTP or HTTPS.
 
