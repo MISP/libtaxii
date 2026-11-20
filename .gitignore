@@ -3,7 +3,7 @@
 *.swo
 build/
 dist/
-libtaxii.egg-info/
+*.egg-info/
 venv/
 .venv/
 .pytest_cache
