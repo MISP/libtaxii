@@ -171,7 +171,7 @@ class HttpClient(object):
             else:  # AUTH_CERT
                 key_file = self.auth_credentials['key_file']
                 cert_file = self.auth_credentials['cert_file']
-                conn = six.moves.http_client.HTTPSConnection(host, port, key_file, cert_file)
+                conn = _https_connection_with_client_cert(host, port, key_file, cert_file)
         else:  # Not using https
             header_dict['X-TAXII-Protocol'] = VID_TAXII_HTTP_10
             if self.auth_type == HttpClient.AUTH_NONE:
@@ -373,10 +373,11 @@ class LibtaxiiHTTPSHandler(urllib.request.HTTPSHandler):
     def https_open(self, req):
         return self.do_open(self.get_connection, req)
 
-    def get_connection(self, host, timeout=0):
+    def get_connection(self, host, timeout=socket._GLOBAL_DEFAULT_TIMEOUT):
         return VerifiableHTTPSConnection(host,
                                          key_file=self.key_file,
                                          cert_file=self.cert_file,
+                                         timeout=timeout,
                                          verify_server=self.verify_server,
                                          ca_certs=self.ca_certs,
                                          key_password=self.key_password)
@@ -392,15 +393,23 @@ class HTTPClientAuthHandler(urllib.request.HTTPSHandler):  # TODO: Is this used 
     def https_open(self, req):
         return self.do_open(self.get_connection, req)
 
-    def get_connection(self, host, timeout=0):
-        return six.moves.http_client.HTTPSConnection(host, key_file=self.key, cert_file=self.cert, timeout=timeout)
+    def get_connection(self, host, timeout=socket._GLOBAL_DEFAULT_TIMEOUT):
+        return _https_connection_with_client_cert(host, None, self.key, self.cert, timeout)
+
+
+def _https_connection_with_client_cert(host, port, key_file, cert_file,
+                                       timeout=socket._GLOBAL_DEFAULT_TIMEOUT):
+    if six.PY3 and hasattr(ssl, 'create_default_context'):
+        context = ssl.create_default_context()
+        context.load_cert_chain(cert_file, key_file)
+        return six.moves.http_client.HTTPSConnection(host, port, timeout=timeout, context=context)
+    return six.moves.http_client.HTTPSConnection(host, port, key_file, cert_file, timeout=timeout)
 
 
 class VerifiableHTTPSConnection(six.moves.http_client.HTTPSConnection):
 
     """
-    The default httplib HTTPSConnection does not verify certificates.
-    This class extends HTTPSConnection and requires certificate verification.
+    HTTPS connection with optional server verification and client certificates.
     Borrowed from http://thejosephturner.com/blog/2011/03/19/https-certificate-verification-in-python-with-urllib2/
     (moved to https://thejosephturner.com/blog/post/https-certificate-verification-in-python-with-urllib2/)
     """
@@ -428,9 +437,11 @@ class VerifiableHTTPSConnection(six.moves.http_client.HTTPSConnection):
 
         elif python_version == (2, 7) or six.PY3:
             if hasattr(ssl, "create_default_context"):
-                self.context = ssl.create_default_context(
-                    ssl.Purpose.SERVER_AUTH if verify_server else ssl.Purpose.CLIENT_AUTH,
-                    cafile=ca_certs)
+                self.context = ssl.create_default_context(cafile=ca_certs)
+                if not verify_server:
+                    if hasattr(self.context, 'check_hostname'):
+                        self.context.check_hostname = False
+                    self.context.verify_mode = ssl.CERT_NONE
 
                 if cert_file or key_file:
                     self.context.load_cert_chain(
@@ -466,6 +477,9 @@ class VerifiableHTTPSConnection(six.moves.http_client.HTTPSConnection):
         self.ca_certs = ca_certs
 
     def connect(self):
+        if six.PY3 and self.context is not None:
+            return super(VerifiableHTTPSConnection, self).connect()
+
         # overrides the version in httplib so that we do
         # certificate verification
 

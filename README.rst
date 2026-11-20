@@ -8,14 +8,8 @@ A Python library for handling `Trusted Automated eXchange of Indicator Informati
 :Information: https://taxiiproject.github.io/
 :Download: https://pypi.python.org/pypi/libtaxii/
 
-|travis badge| |landscape.io badge| |version badge| |downloads badge|
+|version badge| |downloads badge|
 
-.. |travis badge| image:: https://api.travis-ci.org/TAXIIProject/libtaxii.svg?branch=master
-   :target: https://travis-ci.org/TAXIIProject/libtaxii
-   :alt: Build Status
-.. |landscape.io badge| image:: https://landscape.io/github/TAXIIProject/libtaxii/master/landscape.svg?style=flat
-   :target: https://landscape.io/github/TAXIIProject/libtaxii/master
-   :alt: Code Health
 .. |version badge| image:: https://img.shields.io/pypi/v/libtaxii.svg?maxAge=3600
    :target: https://pypi.python.org/pypi/libtaxii/
 .. |downloads badge| image:: https://img.shields.io/pypi/dm/libtaxii.svg?maxAge=3600
@@ -32,12 +26,31 @@ intuitive both to Python developers and XML developers.
 Installation
 ------------
 
-Use pip to install or upgrade libtaxii::
+The test suite runs on Python 3.10 through 3.14. Use
+`uv <https://docs.astral.sh/uv/getting-started/installation/>`_ to create a
+virtual environment and install this checkout from the repository root.
 
-    $ pip install libtaxii [--upgrade]
+.. code-block:: bash
 
-For more information, see the `Installation instructions
-<http://libtaxii.readthedocs.org/en/latest/installation.html>`_.
+    uv venv --python 3.14
+    source .venv/bin/activate
+    uv pip install -e .
+    python -c "import libtaxii; print(libtaxii.__version__)"
+    discovery_client --help
+
+On Windows PowerShell, activate the environment with
+``.venv\Scripts\Activate.ps1``. For a published release, use
+``uv pip install libtaxii`` or ``python -m pip install libtaxii``.
+
+To install the development tools and run the tests from the checkout:
+
+.. code-block:: bash
+
+    uv pip install -r requirements.txt
+    python -m pytest libtaxii
+
+See the `installation guide
+<https://libtaxii.readthedocs.io/en/latest/installation.html>`_ for more examples.
 
 
 Getting Started
@@ -55,8 +68,8 @@ The libtaxii repository has the following layout:
 * ``docs/`` - Used to build the `documentation
   <http://libtaxii.readthedocs.org>`_.
 * ``libtaxii/`` - The main libtaxii source.
-* ``libtaxii/tests/`` - libtaxii tests.
-* ``xsd/`` - A copy of the TAXII XML Schemas, used by libtaxii for validation.
+* ``libtaxii/test/`` - libtaxii tests.
+* ``libtaxii/xsd/`` - TAXII XML schemas used for validation.
 
 
 Versioning
@@ -64,7 +77,7 @@ Versioning
 
 Releases of libtaxii are given ``major.minor.revision`` version numbers, where
 ``major`` and ``minor`` correspond to the TAXII version being supported.  The
-``revision``` number is used to indicate new versions of libtaxii.
+``revision`` number is used to indicate new versions of libtaxii.
 
 
 Feedback

@@ -34,7 +34,7 @@ if (py_maj, py_minor) < (2, 6) or (py_maj == 3 and py_minor < 3):
 
 install_requires = [
     'python-dateutil>=1.4.1',
-    'six>=1.9.0',
+    'six>=1.12.0',
 ]
 
 # lxml has dropped support for Python 2.6, 3.3 after version 4.2.6
@@ -87,6 +87,7 @@ setup(
     },
     package_data={'libtaxii': ['xsd/*.xsd']},
     long_description=get_long_description(),
+    long_description_content_type='text/x-rst',
     keywords='taxii libtaxii',
     classifiers=[
         'Development Status :: 5 - Production/Stable',
@@ -103,6 +104,11 @@ setup(
         'Programming Language :: Python :: 3.6',
         'Programming Language :: Python :: 3.7',
         'Programming Language :: Python :: 3.8',
+        'Programming Language :: Python :: 3.10',
+        'Programming Language :: Python :: 3.11',
+        'Programming Language :: Python :: 3.12',
+        'Programming Language :: Python :: 3.13',
+        'Programming Language :: Python :: 3.14',
     ],
     project_urls={
         'Documentation': 'https://libtaxii.readthedocs.io/',

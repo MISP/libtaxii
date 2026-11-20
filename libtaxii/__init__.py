@@ -5,6 +5,8 @@
 The main libtaxii module
 """
 
+from email.message import Message
+
 import six
 from six.moves import urllib
 
@@ -13,9 +15,14 @@ import libtaxii.messages_11 as tm11
 import libtaxii.clients as tc
 from .constants import *
 
-import cgi
-
 from .version import __version__  # noqa
+
+
+def _get_response_encoding(content_type):
+    headers = Message()
+    if content_type:
+        headers['Content-Type'] = content_type
+    return headers.get_content_charset('utf-8')
 
 
 def get_message_from_http_response(http_response, in_response_to):
@@ -53,18 +60,14 @@ def get_message_from_urllib2_httperror(http_response, in_response_to):
     """ This function should not be called by libtaxii users directly. """
     info = http_response.info()
 
-    if hasattr(info, 'getheader'):
-        taxii_content_type = info.getheader('X-TAXII-Content-Type')
-        _, params = cgi.parse_header(info.getheader('Content-Type'))
-    else:
-        taxii_content_type = info.get('X-TAXII-Content-Type')
-        _, params = cgi.parse_header(info.get('Content-Type'))
-
-    encoding = params.get('charset', 'utf-8')
-    response_message = six.ensure_text(http_response.read(), errors='replace')
+    get_header = info.getheader if hasattr(info, 'getheader') else info.get
+    taxii_content_type = get_header('X-TAXII-Content-Type')
+    encoding = _get_response_encoding(get_header('Content-Type'))
+    response_message = http_response.read()
 
     if taxii_content_type is None:
-        m = str(http_response) + '\r\n' + str(http_response.info()) + '\r\n' + response_message
+        body = six.ensure_text(response_message, encoding=encoding, errors='replace')
+        m = str(http_response) + '\r\n' + str(info) + '\r\n' + body
         return tm11.StatusMessage(message_id='0', in_response_to=in_response_to, status_type=ST_FAILURE, message=m)
     elif taxii_content_type == VID_TAXII_XML_10:  # It's a TAXII XML 1.0 message
         return tm10.get_message_from_xml(response_message, encoding)
@@ -80,24 +83,18 @@ def get_message_from_urllib_addinfourl(http_response, in_response_to):
     """ This function should not be called by libtaxii users directly. """
     info = http_response.info()
 
-    if hasattr(info, 'getheader'):
-        taxii_content_type = info.getheader('X-TAXII-Content-Type')
-        _, params = cgi.parse_header(info.getheader('Content-Type'))
-    else:
-        taxii_content_type = info.get('X-TAXII-Content-Type')
-        _, params = cgi.parse_header(info.get('Content-Type'))
-
-    encoding = params.get('charset', 'utf-8')
-    response_message = six.ensure_text(http_response.read(), errors='replace')
+    get_header = info.getheader if hasattr(info, 'getheader') else info.get
+    taxii_content_type = get_header('X-TAXII-Content-Type')
+    encoding = _get_response_encoding(get_header('Content-Type'))
+    response_message = http_response.read()
 
     if taxii_content_type is None:  # Treat it as a Failure Status Message, per the spec
 
         message = []
-        header_dict = six.iteritems(http_response.info().dict)
-        for k, v in header_dict:
+        for k, v in info.items():
             message.append(k + ': ' + v + '\r\n')
         message.append('\r\n')
-        message.append(response_message)
+        message.append(six.ensure_text(response_message, encoding=encoding, errors='replace'))
 
         m = ''.join(message)
 
@@ -115,15 +112,10 @@ def get_message_from_urllib_addinfourl(http_response, in_response_to):
 
 def get_message_from_httplib_http_response(http_response, in_response_to):
     """ This function should not be called by libtaxii users directly. """
-    if hasattr(http_response, 'getheader'):
-        taxii_content_type = http_response.getheader('X-TAXII-Content-Type')
-        _, params = cgi.parse_header(http_response.getheader('Content-Type'))
-    else:
-        taxii_content_type = http_response.get('X-TAXII-Content-Type')
-        _, params = cgi.parse_header(http_response.get('Content-Type'))
-
-    encoding = params.get('charset', 'utf-8')
-    response_message = six.ensure_text(http_response.read(), errors='replace')
+    get_header = http_response.getheader if hasattr(http_response, 'getheader') else http_response.get
+    taxii_content_type = get_header('X-TAXII-Content-Type')
+    encoding = _get_response_encoding(get_header('Content-Type'))
+    response_message = http_response.read()
 
     if taxii_content_type is None:  # Treat it as a Failure Status Message, per the spec
 
@@ -132,7 +124,7 @@ def get_message_from_httplib_http_response(http_response, in_response_to):
         for k, v in header_tuples:
             message.append(k + ': ' + v + '\r\n')
         message.append('\r\n')
-        message.append(response_message)
+        message.append(six.ensure_text(response_message, encoding=encoding, errors='replace'))
 
         m = ''.join(message)
 
