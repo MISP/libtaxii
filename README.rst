@@ -4,7 +4,7 @@ libtaxii
 A Python library for handling `Trusted Automated eXchange of Indicator Information (TAXII™) <https://taxiiproject.github.io/>`_ v1.x Messages and invoking TAXII Services.
 
 :Source: https://github.com/TAXIIProject/libtaxii/
-:Documentation: https://libtaxii.readthedocs.io/
+:Documentation: https://misp.github.io/libtaxii/
 :Information: https://taxiiproject.github.io/
 :Download: https://pypi.python.org/pypi/libtaxii/
 
@@ -50,14 +50,14 @@ To install the development tools and run the tests from the checkout:
     python -m pytest libtaxii
 
 See the `installation guide
-<https://libtaxii.readthedocs.io/en/latest/installation.html>`_ for more examples.
+<https://misp.github.io/libtaxii/installation.html>`_ for more examples.
 
 
 Getting Started
 ---------------
 
 Read the `Getting Started guide
-<http://libtaxii.readthedocs.org/en/latest/getting_started.html>`_.
+<https://misp.github.io/libtaxii/getting_started.html>`_.
 
 
 Layout
@@ -65,11 +65,32 @@ Layout
 
 The libtaxii repository has the following layout:
 
-* ``docs/`` - Used to build the `documentation
-  <http://libtaxii.readthedocs.org>`_.
+* ``docs/`` - Quarto book and Python API reference.
 * ``libtaxii/`` - The main libtaxii source.
 * ``libtaxii/test/`` - libtaxii tests.
 * ``libtaxii/xsd/`` - TAXII XML schemas used for validation.
+
+Building the documentation
+--------------------------
+
+Install `Quarto <https://quarto.org/docs/get-started/>`_ and activate the
+development environment described above. Run these commands from the
+repository root.
+
+.. code-block:: bash
+
+    python docs/render_api.py
+    quarto render docs
+
+The first command generates Quarto chapters from the Python docstrings and
+Sphinx API sources. The second builds the book into ``docs/_book/``. Use
+``quarto preview docs`` to preview changes locally and ``tox -e docs`` to
+check the API examples.
+
+The layout and color palette follow the `MISP Book
+<https://github.com/MISP/misp-book/>`_. The documentation workflow builds pull
+requests and publishes from ``master`` when the repository's Pages source is
+set to **GitHub Actions** under **Settings → Pages**.
 
 
 Versioning

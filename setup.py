@@ -111,7 +111,7 @@ setup(
         'Programming Language :: Python :: 3.14',
     ],
     project_urls={
-        'Documentation': 'https://libtaxii.readthedocs.io/',
+        'Documentation': 'https://misp.github.io/libtaxii/',
         'Source Code': 'https://github.com/TAXIIProject/libtaxii/',
         'Bug Tracker': 'https://github.com/TAXIIProject/libtaxii/issues/',
     },
