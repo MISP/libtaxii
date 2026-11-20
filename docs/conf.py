@@ -1,9 +1,12 @@
 # Copyright (c) 2017, The MITRE Corporation
 # For license information, see the LICENSE.txt file
 
-import os
+import sys
+from pathlib import Path
 
 import libtaxii
+
+sys.path.insert(0, str(Path(__file__).resolve().parent))
 
 project = u'libtaxii'
 copyright = u'2017, The MITRE Corporation'
@@ -14,35 +17,15 @@ extensions = [
     'sphinx.ext.autodoc',
     'sphinx.ext.doctest',
     'sphinx.ext.ifconfig',
-    'sphinx.ext.intersphinx',
-    'sphinx.ext.viewcode',
     'sphinx.ext.napoleon',
+    'render_api',
 ]
 
-intersphinx_mapping = {
-    'python': ('https://docs.python.org/3/', None),
-}
-
-templates_path = ['_templates']
 source_suffix = '.rst'
-master_doc = 'index'
-
-rst_prolog = """
-**Version**: {0}
-""".format(release)
+root_doc = 'index'
+html_permalinks = False
 
 exclude_patterns = [
     '_build',
-]
-
-on_rtd = os.environ.get('READTHEDOCS', None) == 'True'
-if not on_rtd:
-    html_theme = 'sphinx_rtd_theme'
-else:
-    html_theme = 'default'
-
-latex_elements = {}
-latex_documents = [
-    ('index', 'libtaxii.tex', u'libtaxii Documentation',
-     u'The MITRE Corporation', 'manual'),
+    '_book',
 ]

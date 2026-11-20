@@ -1,0 +1,12 @@
+# Overview {.unnumbered}
+
+libtaxii is a Python library for the Trusted Automated eXchange of Indicator
+Information (TAXII) 1.x specifications.
+
+Use it to create TAXII 1.0 and 1.1 messages, serialize them to XML or Python
+dictionaries, and send them over HTTP or HTTPS.
+
+- [Install libtaxii](installation.qmd) with pip or uv.
+- [Get started](getting_started.qmd) with messages, schema validation, and clients.
+- [Use the command-line clients](scripts.qmd) to discover services and poll collections.
+- [Browse the Python API](api/modules.qmd) for signatures and examples.

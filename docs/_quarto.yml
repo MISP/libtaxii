@@ -1,0 +1,54 @@
+project:
+  type: book
+  output-dir: _book
+
+book:
+  title: libtaxii Documentation
+  subtitle: Python library for TAXII 1.x
+  site-url: https://misp.github.io/libtaxii/
+  repo-url: https://github.com/MISP/libtaxii
+  repo-branch: master
+  repo-subdir: docs
+  repo-actions: [issue]
+  search: true
+  sidebar:
+    style: docked
+    collapse-level: 1
+  page-footer:
+    left: "libtaxii documentation"
+    right: "Built with [Quarto](https://quarto.org)"
+  chapters:
+    - index.qmd
+    - part: User Guide
+      chapters:
+        - installation.qmd
+        - getting_started.qmd
+        - scripts.qmd
+    - part: API Reference
+      chapters:
+        - api/modules.qmd
+        - api/libtaxii.qmd
+        - api/common.qmd
+        - api/constants.qmd
+        - api/clients.qmd
+        - api/messages_10.qmd
+        - api/messages_11.qmd
+        - api/query.qmd
+        - api/validation.qmd
+    - changes.qmd
+
+format:
+  html:
+    theme:
+      light: [cosmo, assets/misp.scss]
+      dark: [darkly, assets/misp.scss]
+    grid:
+      sidebar-width: 260px
+      body-width: 850px
+      margin-width: 220px
+    toc: true
+    toc-depth: 3
+    code-copy: true
+    code-overflow: wrap
+    code-block-bg: true
+    number-sections: false

@@ -1,0 +1,61 @@
+# Installation
+
+libtaxii's test suite runs on Python 3.10 through 3.14. Use a virtual
+environment to keep libtaxii and its dependencies separate from other projects.
+
+## Install a published release
+
+With [uv](https://docs.astral.sh/uv/getting-started/installation/) installed,
+create and activate a virtual environment with a Python version supported by
+the release you need:
+
+```bash
+uv venv
+source .venv/bin/activate
+uv pip install libtaxii
+```
+
+On Windows PowerShell, activate it with `.venv\Scripts\Activate.ps1`.
+If you use pip, run `python -m pip install libtaxii` in your environment.
+
+## Install and run from a checkout
+
+From the repository root, install the local source in editable mode:
+
+```bash
+uv venv --python 3.14
+source .venv/bin/activate
+uv pip install -e .
+python -c "import libtaxii; print(libtaxii.__version__)"
+discovery_client --help
+```
+
+To run the discovery client's help directly from the checkout in a temporary tool
+environment, use:
+
+```bash
+uv tool run --python 3.14 --from . discovery_client --help
+```
+
+To query a TAXII 1.1 discovery service, substitute your server's discovery URL
+and the CA bundle used to verify it:
+
+```bash
+discovery_client --url https://taxii.example.org/taxii-discovery-service \
+    --verify-server /path/to/ca-bundle.pem
+```
+
+See [command-line clients](scripts.qmd) for the available commands and arguments. To install the
+development tools and run the test suite in your virtual environment:
+
+```bash
+uv pip install -r requirements.txt
+python -m pytest libtaxii
+```
+
+## Dependencies
+
+The installer resolves [lxml](https://lxml.de/),
+[python-dateutil](https://dateutil.readthedocs.io/), and
+[six](https://six.readthedocs.io/) automatically. If your platform has no
+prebuilt lxml wheel, see the [lxml build prerequisites](https://lxml.de/installation.html).

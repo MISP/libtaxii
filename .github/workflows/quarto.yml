@@ -1,0 +1,50 @@
+name: Build and publish documentation
+
+on:
+  push:
+    branches: [master]
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+      - uses: astral-sh/setup-uv@v7
+      - uses: quarto-dev/quarto-actions/setup@v2
+        with:
+          version: "1.9.38"
+      - run: uv venv --python 3.14
+      - run: uv pip install -e . 'Sphinx>=7.2'
+      - run: uv run --no-project python docs/render_api.py
+      - run: uv run --no-project quarto render docs
+      - name: Check internal links and anchors
+        uses: lycheeverse/lychee-action@v2
+        with:
+          args: --offline --include-fragments --no-progress "docs/_book/**/*.html"
+          fail: true
+      - uses: actions/upload-pages-artifact@v4
+        if: github.ref == 'refs/heads/master' && github.event_name != 'pull_request'
+        with:
+          path: docs/_book
+
+  deploy:
+    if: github.ref == 'refs/heads/master' && github.event_name != 'pull_request'
+    needs: build
+    runs-on: ubuntu-latest
+    permissions:
+      pages: write
+      id-token: write
+    concurrency:
+      group: github-pages
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - name: Deploy the book to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
