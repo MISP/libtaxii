@@ -9,7 +9,7 @@ import libtaxii
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 
 project = u'libtaxii'
-copyright = u'2017, The MITRE Corporation'
+copyright = u'2017 The MITRE Corporation and 2026 MISP Project'
 version = libtaxii.__version__
 release = version
 
