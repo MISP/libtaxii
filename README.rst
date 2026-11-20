@@ -3,7 +3,8 @@ libtaxii
 
 A Python library for handling `Trusted Automated eXchange of Indicator Information (TAXII™) <https://taxiiproject.github.io/>`_ v1.x Messages and invoking TAXII Services.
 
-:Source: https://github.com/TAXIIProject/libtaxii/
+:Source: https://github.com/MISP/libtaxii/
+:Upstream: https://github.com/TAXIIProject/libtaxii/
 :Documentation: https://misp.github.io/libtaxii/
 :Information: https://taxiiproject.github.io/
 :Download: https://pypi.python.org/pypi/libtaxii/
@@ -17,6 +18,10 @@ A Python library for handling `Trusted Automated eXchange of Indicator Informati
 
 Overview
 --------
+
+The MISP Project maintains this fork of libtaxii. The MITRE Corporation
+developed the original library. See the `MISP Project website
+<https://www.misp-project.org/>`_.
 
 A primary goal of libtaxii is to remain faithful to both the TAXII
 specifications and to customary Python practices. libtaxii is designed to be
@@ -104,4 +109,5 @@ Releases of libtaxii are given ``major.minor.revision`` version numbers, where
 Feedback
 --------
 
-Please provide feedback and/or comments on open issues to taxii@mitre.org.
+Report bugs and share feedback through the `MISP/libtaxii issue tracker
+<https://github.com/MISP/libtaxii/issues>`_.

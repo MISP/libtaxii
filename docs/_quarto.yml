@@ -15,7 +15,7 @@ book:
     style: docked
     collapse-level: 1
   page-footer:
-    left: "libtaxii documentation"
+    left: "Maintained by the [MISP Project](https://www.misp-project.org/)"
     right: "Built with [Quarto](https://quarto.org)"
   chapters:
     - index.qmd
